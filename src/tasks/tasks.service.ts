@@ -27,4 +27,9 @@ export class TasksService {
 
     return task;
   }
+
+  deleteTaskById(id: string): void {
+    const idx = this.tasks.map((task) => task.id).indexOf(id);
+    this.tasks.splice(idx, 1);
+  }
 }
