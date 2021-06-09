@@ -19,7 +19,6 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-
       "args": ["${workspaceFolder}/src/main.ts"],
       "runtimeArgs": [
         "--nolazy",
