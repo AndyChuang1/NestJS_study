@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
+import { CreateTaskDto, CreateTaskBatchDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
 
@@ -29,13 +29,17 @@ export class TasksController {
     return this.tasksService.getTaskById(id);
   }
 
-  @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto[]): Task[] {
+  @Post('/batch')
+  batchCreateTask(@Body() createTaskDto: CreateTaskBatchDto): Task[] {
     const tasks: Task[] = [];
-    createTaskDto.forEach((task) => {
+    createTaskDto.data.forEach((task) => {
       tasks.push(this.tasksService.createTask(task));
     });
     return tasks;
+  }
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    return this.tasksService.createTask(createTaskDto);
   }
 
   @Delete('/:id')
