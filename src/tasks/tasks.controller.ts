@@ -14,11 +14,17 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto, CreateTaskBatchDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('task')
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: Task,
+  })
   @Get()
   getTask(@Query() getTaskDto: GetTaskDto): Task[] {
     return this.tasksService.getTask(getTaskDto);
