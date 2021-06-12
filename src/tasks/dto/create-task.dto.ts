@@ -9,17 +9,9 @@ export class CreateTaskDto {
   description: string;
 }
 
-class task {
-  @IsNotEmpty()
-  title: string;
-
-  @IsNotEmpty()
-  description: string;
-}
-
 export class CreateTaskBatchDto {
   @ValidateNested({ each: true })
-  @Type(() => task)
+  @Type(() => CreateTaskDto)
   @IsNotEmpty()
   data: CreateTaskDto[];
 }
