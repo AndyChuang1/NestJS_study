@@ -7,19 +7,21 @@ import {
   Delete,
   Patch,
   Put,
+  Query,
 } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { GetTaskDto } from './dto/get-task.dto';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getAllTasks(): Task[] {
-    return this.tasksService.getAllTasks();
+  getTask(@Query() getTaskDto: GetTaskDto): Task[] {
+    return this.tasksService.getTask(getTaskDto);
   }
 
   @Get('/:id')
@@ -28,8 +30,12 @@ export class TasksController {
   }
 
   @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.createTask(createTaskDto);
+  createTask(@Body() createTaskDto: CreateTaskDto[]): Task[] {
+    const tasks: Task[] = [];
+    createTaskDto.forEach((task) => {
+      tasks.push(this.tasksService.createTask(task));
+    });
+    return tasks;
   }
 
   @Delete('/:id')
