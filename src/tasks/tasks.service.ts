@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Task, TaskStatus } from './task.model';
+import { Task, TaskStatus } from './task.model.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
-import { error } from 'console';
 
 @Injectable()
 export class TasksService {

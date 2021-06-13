@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Task {
-  @ApiProperty()
+  // @ApiProperty()
   id: string;
-  @ApiProperty()
+  // @ApiProperty()
   title: string;
-  @ApiProperty()
+  // @ApiProperty()
   description: string;
-  @ApiProperty()
+  // @ApiProperty()
   status: TaskStatus;
 }
 
