@@ -26,10 +26,10 @@ export class TasksController {
   //   description: 'The record has been successfully created.',
   //   type: Task,
   // })
-  // @Get()
-  // getTask(@Query() getTaskDto: GetTaskDto): Task[] {
-  //   return this.tasksService.getTask(getTaskDto);
-  // }
+  @Get()
+  getTask(@Query() getTaskDto: GetTaskDto): Promise<Task[]> {
+    return this.tasksService.getTask(getTaskDto);
+  }
 
   @Get('/:id')
   getTasksById(@Param('id') id?: string): Promise<Task> {

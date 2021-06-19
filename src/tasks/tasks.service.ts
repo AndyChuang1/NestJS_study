@@ -6,6 +6,7 @@ import { Task } from './task.model.entity';
 import { TaskStatus } from './task-status.enum';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { GetTaskDto } from './dto/get-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -16,31 +17,14 @@ export class TasksService {
   // getAllTasks(): Task[] {
   //   return this.tasks;
   // }
-  // getTask(getTaskDto: GetTaskDto): Task[] {
-  //   let tasks = this.getAllTasks();
-  //   const { status, search } = getTaskDto;
-  //   if (status) {
-  //     tasks = tasks.filter((task) => task.status === status);
-  //   }
-  //   if (search) {
-  //     tasks = tasks.filter((task) => {
-  //       if (task.title.includes(search) || task.description.includes(search)) {
-  //         return true;
-  //       }
-  //       return false;
-  //     });
-  //   }
-  //   return tasks;
-  // }
+  getTask(getTaskDto: GetTaskDto): Promise<Task[]> {
+    return this.tasksRepository.getTasks(getTaskDto);
+  }
   async getTaskById(id: string): Promise<Task> {
-    let found;
-    if (id) {
-      found = await this.tasksRepository.findOne(id);
-      if (!found) {
-        throw new NotFoundException(`Task id: ${id} not found`);
-      }
-    } else {
-      found = await this.tasksRepository.find();
+    const found = await this.tasksRepository.findOne(id);
+
+    if (!found) {
+      throw new NotFoundException(`Task id: ${id} not found`);
     }
 
     return found;
