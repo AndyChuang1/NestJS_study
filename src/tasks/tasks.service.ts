@@ -4,7 +4,7 @@ import { TasksRepository } from './task.respository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.model.entity';
 import { TaskStatus } from './task-status.enum';
-import { CreateTaskDto } from './dto/create-task.dto';
+import { CreateTaskDto, CreateTaskBatchDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
 
@@ -32,6 +32,9 @@ export class TasksService {
 
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);
+  }
+  createTasks(createTaskDto: CreateTaskBatchDto): Promise<Task[]> {
+    return this.tasksRepository.createTasks(createTaskDto);
   }
   deleteTaskById(id: string): Promise<void> {
     return this.tasksRepository.deleteTaskById(id);

@@ -1,6 +1,6 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Task } from './task.model.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
+import { CreateTaskDto, CreateTaskBatchDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -38,6 +38,22 @@ export class TasksRepository extends Repository<Task> {
     await this.save(task);
 
     return task;
+  }
+  async createTasks(createTaskDto: CreateTaskBatchDto): Promise<Task[]> {
+    const { data } = createTaskDto;
+
+    const insertData = data.map((task) => {
+      return this.create({
+        title: task.title,
+        description: task.description,
+        status: TaskStatus.OPEN,
+      });
+    });
+
+    // const result = await this.manager.insert(Task, insertData);
+    await this.save(insertData);
+
+    return insertData;
   }
 
   async deleteTaskById(id: string): Promise<void> {

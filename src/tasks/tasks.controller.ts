@@ -36,14 +36,10 @@ export class TasksController {
     return this.tasksService.getTaskById(id);
   }
 
-  // @Post('/batch')
-  // batchCreateTask(@Body() createTaskDto: CreateTaskBatchDto): Task[] {
-  //   const tasks: Task[] = [];
-  //   createTaskDto.data.forEach((task) => {
-  //     tasks.push(this.tasksService.createTask(task));
-  //   });
-  //   return tasks;
-  // }
+  @Post('/batch')
+  batchCreateTask(@Body() createTaskDto: CreateTaskBatchDto): Promise<Task[]> {
+    return this.tasksService.createTasks(createTaskDto);
+  }
   @Post()
   createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
