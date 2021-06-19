@@ -11,7 +11,7 @@ export class CreateTaskDto {
   title: string;
   @ApiProperty({ description: 'Task description' })
   @IsNotEmpty()
-  description: string;
+  description?: string;
 }
 
 export class CreateTaskBatchDto {
