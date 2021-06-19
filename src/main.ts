@@ -14,7 +14,7 @@ async function bootstrap() {
     .setTitle('Open API example')
     .setDescription('The Task API description')
     .setVersion('3.0')
-    .addTag('task')
+    .addTag('Task')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   const customOptions: SwaggerCustomOptions = {

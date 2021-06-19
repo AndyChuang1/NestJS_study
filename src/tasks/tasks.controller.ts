@@ -17,7 +17,7 @@ import { GetTaskDto } from './dto/get-task.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { Task } from './task.model.entity';
 
-@ApiTags('task')
+@ApiTags('Task')
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
@@ -44,10 +44,10 @@ export class TasksController {
   //   });
   //   return tasks;
   // }
-  // @Post()
-  // createTask(@Body() createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.createTask(createTaskDto);
-  // }
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
+  }
 
   // @Delete('/:id')
   // delTasksById(@Param('id') id: string): void {
