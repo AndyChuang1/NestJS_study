@@ -1,18 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { TaskStatus } from './task-status.enum';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+@Entity()
 export class Task {
-  // @ApiProperty()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-  // @ApiProperty()
-  title: string;
-  // @ApiProperty()
-  description: string;
-  // @ApiProperty()
-  status: TaskStatus;
-}
 
-export enum TaskStatus {
-  OPEN = 'OPEN',
-  IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'Done',
+  @Column()
+  title: string;
+  @Column()
+  description: string;
+  @Column()
+  status: TaskStatus;
 }
