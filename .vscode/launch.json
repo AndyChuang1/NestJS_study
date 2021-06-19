@@ -31,6 +31,41 @@
       "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
       "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch NestJS",
+      "program": "${workspaceFolder}/src/main.ts",
+      "preLaunchTask": "tsc: watch - tsconfig.build.json",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "<node_internals>/**/*.js"
+      ],
+      "console": "integratedTerminal",
+      "outputCapture": "std"
+
+      // "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "nodemon",
+      "args": ["--watch", "dist"],
+      "name": "Debug TypeScript in Node.js",
+      "preLaunchTask": "tsc: watch - tsconfig.build.json",
+      "program": "${workspaceFolder}/src/main.ts",
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "restart": true,
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }
