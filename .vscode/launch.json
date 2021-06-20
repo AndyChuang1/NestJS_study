@@ -62,10 +62,7 @@
       "restart": true,
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "skipFiles": [
-        "${workspaceFolder}/node_modules/**/*.js",
-        "<node_internals>/**/*.js"
-      ]
+      "skipFiles": ["<node_internals>/**/*.js"]
     }
   ]
 }

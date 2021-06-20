@@ -6,7 +6,7 @@ import {
   Matches,
 } from 'class-validator';
 
-export class CreateAuthDto {
+export class AuthDto {
   @IsString()
   @MinLength(4)
   @MaxLength(32)
