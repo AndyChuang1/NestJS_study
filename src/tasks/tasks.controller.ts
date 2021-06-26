@@ -33,13 +33,16 @@ export class TasksController {
   //   type: Task,
   // })
   @Get()
-  getTask(@Query() getTaskDto: GetTaskDto): Promise<Task[]> {
-    return this.tasksService.getTask(getTaskDto);
+  getTask(
+    @Query() getTaskDto: GetTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    return this.tasksService.getTask(getTaskDto, user);
   }
 
   @Get('/:id')
-  getTasksById(@Param('id') id?: string): Promise<Task> {
-    return this.tasksService.getTaskById(id);
+  getTasksById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
+    return this.tasksService.getTaskById(id, user);
   }
 
   @Post('/batch')
@@ -55,16 +58,17 @@ export class TasksController {
   }
 
   @Delete('/:id')
-  delTasksById(@Param('id') id: string): Promise<void> {
-    return this.tasksService.deleteTaskById(id);
+  delTasksById(@Param('id') id: string, @GetUser() user: User): Promise<void> {
+    return this.tasksService.deleteTaskById(id, user);
   }
 
   @Put('/:id')
   updateTasksById(
     @Param('id') id: string,
     @Body() updateTaskDto: UpdateTaskDto,
+    @GetUser() user: User,
   ): Promise<void> {
-    return this.tasksService.updateTaskById(id, updateTaskDto);
+    return this.tasksService.updateTaskById(id, updateTaskDto, user);
   }
 
   // @Patch('/:id/status')

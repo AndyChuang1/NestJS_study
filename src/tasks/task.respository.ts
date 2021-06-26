@@ -8,9 +8,11 @@ import { GetTaskDto } from './dto/get-task.dto';
 import { User } from 'src/auth/user.entity';
 @EntityRepository(Task)
 export class TasksRepository extends Repository<Task> {
-  async getTasks(getTaskDto: GetTaskDto): Promise<Task[]> {
+  async getTasks(getTaskDto: GetTaskDto, user: User): Promise<Task[]> {
     const { status, search } = getTaskDto;
     const query = this.createQueryBuilder('task');
+
+    query.where({ user });
 
     if (status) {
       query.andWhere('task.status=:status', { status });
@@ -18,7 +20,7 @@ export class TasksRepository extends Repository<Task> {
 
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE :search OR LOWER(task.description) LIKE :search',
+        '(LOWER(task.title) LIKE :search OR LOWER(task.description) LIKE :search)',
         { search: `${search}%` },
       );
     }
@@ -58,8 +60,8 @@ export class TasksRepository extends Repository<Task> {
     return insertData;
   }
 
-  async deleteTaskById(id: string): Promise<void> {
-    const result = await this.delete(id);
+  async deleteTaskById(id: string, user: User): Promise<void> {
+    const result = await this.delete({ id, user });
 
     if (result.affected === 0) {
       throw new NotFoundException(`Task id: ${id} not found`);
@@ -69,6 +71,7 @@ export class TasksRepository extends Repository<Task> {
   async updateTaskById(
     id: string,
     updateTaskDto: UpdateTaskDto,
+    user: User,
   ): Promise<void> {
     const { title, description, status } = updateTaskDto;
 
@@ -78,7 +81,7 @@ export class TasksRepository extends Repository<Task> {
       status,
     };
 
-    const result = await this.update(id, task);
+    const result = await this.update({ id, user }, task);
     if (result.affected === 0) {
       throw new NotFoundException(`Task id: ${id} not found`);
     }
