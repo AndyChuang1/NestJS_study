@@ -8,6 +8,7 @@ import {
   Patch,
   Put,
   Query,
+  Req,
 } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model.entity';
 import { TasksService } from './tasks.service';
@@ -28,6 +29,11 @@ export class TasksController {
   @Get()
   getTask(@Query() getTaskDto: GetTaskDto): Task[] {
     return this.tasksService.getTask(getTaskDto);
+  }
+  @Get('/openAPI')
+  getApiSample(@Req() req): Promise<any> {
+    console.log(req);
+    return this.tasksService.getOpenAPI();
   }
 
   @Get('/:id')

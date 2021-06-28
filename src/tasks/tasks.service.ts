@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
+import { AxiosService } from 'src/axios/axios.service';
 
 @Injectable()
 export class TasksService {
+  constructor(private axios: AxiosService) {}
   private tasks: Task[] = [];
+  private logger = new Logger('Task');
 
   getAllTasks(): Task[] {
     return this.tasks;
@@ -77,5 +80,15 @@ export class TasksService {
     task.status = status;
 
     return task;
+  }
+
+  async getOpenAPI() {
+    try {
+      const response = await this.axios.get('/todos/1');
+      this.logger.log(response.data);
+      return response.data;
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }
