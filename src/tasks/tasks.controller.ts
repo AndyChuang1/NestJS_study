@@ -9,18 +9,25 @@ import {
   Put,
   Query,
   Req,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { Task, TaskStatus } from './task.model.entity';
+import { Task, TaskStatus } from './entity/task.model.entity';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto, CreateTaskBatchDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { OpenAPI, OpenAPIRes } from './entity/openAPI.entity';
+import { Translator } from './translator/translator';
 
 @ApiTags('task')
 @Controller('tasks')
 export class TasksController {
-  constructor(private tasksService: TasksService) {}
+  constructor(
+    private tasksService: TasksService,
+    private translator: Translator,
+  ) {}
 
   // @ApiCreatedResponse({
   //   description: 'The record has been successfully created.',
@@ -30,10 +37,13 @@ export class TasksController {
   getTask(@Query() getTaskDto: GetTaskDto): Task[] {
     return this.tasksService.getTask(getTaskDto);
   }
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get('/openAPI')
-  getApiSample(@Req() req): Promise<any> {
-    console.log(req);
-    return this.tasksService.getOpenAPI();
+  async getApiSample(@Req() req): Promise<OpenAPIRes> {
+    const result = await this.tasksService.getOpenAPI();
+    const res = this.translator.translatorToResponse(result);
+    console.log(res);
+    return res;
   }
 
   @Get('/:id')
