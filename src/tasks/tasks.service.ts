@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Logger,
+  Inject,
+  CACHE_MANAGER,
+} from '@nestjs/common';
 import { Task, TaskStatus } from './entity/task.model.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -6,10 +12,14 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskDto } from './dto/get-task.dto';
 import { AxiosService } from 'src/axios/axios.service';
 import { OpenAPI } from './entity/openAPI.entity';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class TasksService {
-  constructor(private axios: AxiosService) {}
+  constructor(
+    private axios: AxiosService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
   private tasks: Task[] = [];
   private logger = new Logger('Task');
 
@@ -48,12 +58,31 @@ export class TasksService {
 
   createTask(createTaskDto: CreateTaskDto): Task {
     const { title, description } = createTaskDto;
+
     const task: Task = {
       id: uuid(),
       title,
       description,
       status: TaskStatus.OPEN,
     };
+    this.cacheManager.store
+      .set('key', 'value')
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    this.cacheManager
+      .get('key')
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     this.tasks.push(task);
 
     return task;
