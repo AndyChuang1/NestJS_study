@@ -1,11 +1,5 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
-import Axios, {
-  AxiosInstance,
-  AxiosPromise,
-  AxiosRequestConfig,
-  AxiosResponse,
-  CancelTokenSource,
-} from 'axios';
+import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AXIOS_INSTANCE_TOKEN } from './axios.constants';
 
 @Injectable()
